@@ -1,5 +1,8 @@
 import tcod
 
+from actions import EscapeAction, MovementAction
+from input_handlers import EventHandler
+
 def main() -> None:
 
     #print( "Hello World!" )
@@ -13,6 +16,8 @@ def main() -> None:
     tileset = tcod.tileset.load_tilesheet(
         "dejavu10x10_gs_tc.png", 32, 8, tcod.tileset.CHARMAP_TCOD
     )
+
+    event_handler = EventHandler()
 
     # With is basically C#'s using statement
     with tcod.context.new_terminal(
@@ -29,8 +34,19 @@ def main() -> None:
             # Reminder, context is the above tcod terminal
             context.present( root_console ) # Updates the screen
 
-            for event in tcod.event.wait(): # Is this like an event listener?
-                if event.type == "QUIT":
+            for event in tcod.event.wait(): # This listens for user input
+                
+                action = event_handler.dispatch( event )
+
+                # So we pass the keypress to the event handler that returns to us the resulting action
+                if action is None:
+                    continue
+
+                if isinstance( action, MovementAction ):
+                    player_x += action.dx
+                    player_y += action.dy
+
+                elif isinstance( action, EscapeAction ):
                     raise SystemExit()
 
 if __name__ == "__main__":
