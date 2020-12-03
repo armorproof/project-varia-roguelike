@@ -34,6 +34,8 @@ def main() -> None:
             # Reminder, context is the above tcod terminal
             context.present( root_console ) # Updates the screen
 
+            root_console.clear()
+
             for event in tcod.event.wait(): # This listens for user input
                 
                 action = event_handler.dispatch( event )
