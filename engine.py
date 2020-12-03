@@ -7,6 +7,9 @@ def main() -> None:
     screen_width = 80
     screen_height = 50
 
+    player_x = int( screen_width / 2 )
+    player_y = int( screen_height / 2 )
+
     tileset = tcod.tileset.load_tilesheet(
         "dejavu10x10_gs_tc.png", 32, 8, tcod.tileset.CHARMAP_TCOD
     )
@@ -21,7 +24,7 @@ def main() -> None:
     ) as context:
         root_console = tcod.Console( screen_width, screen_height, order = "F" )
         while True: # Main game loop?
-            root_console.print( x = 1, y = 1, string="@" )
+            root_console.print( x = player_x, y = player_y, string="@" )
 
             # Reminder, context is the above tcod terminal
             context.present( root_console ) # Updates the screen
