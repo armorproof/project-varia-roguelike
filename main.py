@@ -1,6 +1,6 @@
 import tcod
 
-from actions import EscapeAction, MovementAction
+from engine import Engine
 from entity import Entity
 from input_handlers import EventHandler
 
@@ -19,9 +19,9 @@ def main() -> None:
 
     player = Entity( int( screen_width / 2 ), int( screen_height / 2 ), "@", ( 255, 255, 255 ) )
     npc = Entity( int( screen_width / 2 - 5 ), int( screen_height / 2 ), "@", ( 255, 255, 0 ) )
-    
-    # Collection of all the entities in the game?
     entities = { npc, player }
+
+    engine = Engine( entities = entities, event_handler = event_handler, player = player )
 
     # With is basically C#'s using statement
     with tcod.context.new_terminal(
@@ -33,26 +33,13 @@ def main() -> None:
     ) as context:
         root_console = tcod.Console( screen_width, screen_height, order = "F" )
         while True: # Main game loop?
-            root_console.print( x = player.x, y = player.y, string=player.char, fg = player.color )
+            engine.render( console = root_console, context = context )
+            
+            # Waits for user input
+            events = tcod.event.wait()
 
-            # Reminder, context is the above tcod terminal
-            context.present( root_console ) # Updates the screen
-
-            root_console.clear()
-
-            for event in tcod.event.wait(): # This listens for user input
-                
-                action = event_handler.dispatch( event )
-
-                # So we pass the keypress to the event handler that returns to us the resulting action
-                if action is None:
-                    continue
-
-                if isinstance( action, MovementAction ):
-                    player.move( dx = action.dx, dy = action.dy )
-
-                elif isinstance( action, EscapeAction ):
-                    raise SystemExit()
+            # Sends the events to the engine
+            engine.handle_events( events )
 
 if __name__ == "__main__":
     main()
