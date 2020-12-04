@@ -30,6 +30,6 @@ class Engine:
         for entity in self.entities:
             console.print( entity.x, entity.y, entity.char, fg = entity.color )
 
-        console.present( console )
+        context.present( console )
 
         console.clear() # Why does this happen after present?
