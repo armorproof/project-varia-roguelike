@@ -1,4 +1,4 @@
-from tpying import Tuple
+from typing import Tuple
 
 class Entity:
     """
