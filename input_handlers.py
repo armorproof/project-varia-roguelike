@@ -2,8 +2,7 @@ from typing import Optional
 
 import tcod.event # The tcod event system
 
-# The classes we just created in the actions.py file
-from actions import Action, EscapeAction, MovementAction
+from actions import Action, BumpAction, MovementAction
 
 # Ooh, a custom event handler class!
 class EventHandler( tcod.event.EventDispatch[ Action ] ): # Subclass of EventDispatch
@@ -17,13 +16,13 @@ class EventHandler( tcod.event.EventDispatch[ Action ] ): # Subclass of EventDis
 
         # Classic key switch statement
         if key == tcod.event.K_UP: # Guessing these are fixed variables representing each key
-            action = MovementAction( dx = 0, dy =- 1 )
+            action = BumpAction( dx = 0, dy =- 1 )
         elif key == tcod.event.K_DOWN:
-            action = MovementAction( dx = 0, dy = 1 )
+            action = BumpAction( dx = 0, dy = 1 )
         elif key == tcod.event.K_LEFT:
-            action = MovementAction( dx =- 1, dy = 0 )
+            action = BumpAction( dx =- 1, dy = 0 )
         elif key == tcod.event.K_RIGHT:
-            action = MovementAction( dx = 1, dy = 0 )
+            action = BumpAction( dx = 1, dy = 0 )
 
         elif key == tcod.event.K_ESCAPE:
             action = EscapeAction()
