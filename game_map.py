@@ -1,10 +1,11 @@
 from __future__ import annotations
 
-from typing import Iterable, Optional, TYPE_CHECKING
+from typing import Iterable, Iterator, Optional, TYPE_CHECKING
 
 import numpy as np  # type: ignore
 from tcod.console import Console
 
+from entity import Actor
 import tile_types
 
 if TYPE_CHECKING:
@@ -35,6 +36,16 @@ class GameMap:
             ( width, height ), fill_value = False, order = "F"
         ) # Tiles the player has seen before
 
+    # I should do some research on how iterators work in Python
+    @property
+    def actors( self ) -> Iterator[ Actor ]:
+        """Iterate over this maps living actors."""
+        yield from (
+            entity
+            for entity in self.entities
+            if isinstance( entity, Actor ) and entity.is_alive
+        )
+
     def get_blocking_entity_at_location(
         self, location_x: int, location_y: int
     ) -> Optional[ Entity ]:
@@ -48,6 +59,13 @@ class GameMap:
                 return entity
 
         return None
+
+    def get_actor_at_location( self, x: int, y: int ) -> Optional[ Actor ]:
+        for actor in self.actors:
+            if actor.x == x and actor.y == y:
+                return actor
+        
+        return None # Remembering this starts with a capital is going to be hard
 
     def in_bounds( self, x: int, y: int ) -> bool:
         """Return True if x and y are inside of the bounds of this map."""
