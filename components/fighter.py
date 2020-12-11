@@ -2,7 +2,7 @@ from components.base_component import BaseComponent
 
 
 class Fighter( BaseComponent ):
-    def __init(
+    def __init__(
         self,
         hp: int,
         defense: int,
