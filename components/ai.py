@@ -38,7 +38,7 @@ class BaseAI( Action, BaseComponent ): # Multiple inheritance!
         graph = tcod.path.SimpleGraph( cost = cost, cardinal = 2, diagonal = 3 )
         pathfinder = tcod.path.Pathfinder( graph )
 
-        pathfinder.add_root( ( self.entity.x, self.entity ) ) # Start position.
+        pathfinder.add_root( ( self.entity.x, self.entity.y ) ) # Start position.
 
         # Compute the path to the destination and remove the starting point.
         path: List[ List[ int ] ] = pathfinder.path_to( ( dest_x, dest_y ) )[ 1: ].tolist()
