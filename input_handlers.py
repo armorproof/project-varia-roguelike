@@ -26,7 +26,8 @@ MOVE_KEYS = {
     tcod.event.K_KP_4: ( -1, 0 ),
     tcod.event.K_KP_6: ( 1, 0 ),
     tcod.event.K_KP_7: ( -1, -1 ),
-    tcod.event.K_KP_9: ( 0, -1 ),
+    tcod.event.K_KP_8: ( 0, -1 ),
+    tcod.event.K_KP_9: ( 1, -1 ),
     # Vi keys
     tcod.event.K_h: ( -1, 0 ),
     tcod.event.K_j: ( 0, 1 ),
