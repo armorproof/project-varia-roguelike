@@ -1,7 +1,16 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from components.base_component import BaseComponent
+
+if TYPE_CHECKING:
+    from entity import Actor
 
 
 class Fighter( BaseComponent ):
+    entity: Actor
+
     def __init__(
         self,
         hp: int,
@@ -21,3 +30,19 @@ class Fighter( BaseComponent ):
     def hp( self, value: int ) -> None:
         # This line is neat once you understand the meanings of the max and min functions
         self._hp = max( 0, min( value, self.max_hp ) )
+        if self._hp == 0 and self.entity.ai:
+            self.die()
+
+    def die( self ) -> None:
+        if self.engine.player is self.entity:
+            death_message = "You died!"
+        else:
+            death_message = f"{self.entity.name} is dead!"
+
+        self.entity.char = "%"
+        self.entity.color = ( 191, 0, 0 )
+        self.entity.blocks_movement = False
+        self.entity.ai = None
+        self.entity.name = f"remains f {self.entity.name}" # Oh yeah, I guess you can give each one a unique name
+
+        print( death_message )
