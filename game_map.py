@@ -36,7 +36,11 @@ class GameMap:
             ( width, height ), fill_value = False, order = "F"
         ) # Tiles the player has seen before
 
-    # I should do some research on how iterators work in Python
+    # I'm not sure what the point of this is. Readability?
+    @property
+    def gamemap( self ) -> GameMap:
+        return self
+
     @property
     def actors( self ) -> Iterator[ Actor ]:
         """Iterate over this maps living actors."""
