@@ -4,7 +4,7 @@ from typing import Optional, TYPE_CHECKING
 
 import actions
 import color
-from components.base_components import base_components
+from components.base_component import BaseComponent
 from exceptions import Impossible
 
 if TYPE_CHECKING:
