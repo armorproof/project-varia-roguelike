@@ -217,5 +217,72 @@ class AskUserEventHandler( EventHandler ):
         self.engine.event_handler = MainGameEventHandler( self.engine )
         return None
 
+class InventoryEventHandler( AskUserEventHandler ):
+    """This handler lets the user select an item.
 
+    What happens then depends on the subclass.
+    """
+
+    TITLE = "<missing title>"
+    
+    def on_render( self, console: tcod.Console ) -> None:
+        """Render an inventory menu that displays the items in the inventory and the letter to select them.
+        Will move to a different position based on where the player is located so the player can always see where
+        they are.
+        """
+        # I don't like how this method is laid out. Refactor in the future.
+
+        super().on_render( console )
+        number_of_items_in_inventory = len( self.engine.player.inventory.items )
+        # That will have to be changed if you can ever view another character's inventory
+
+        height = number_of_items_in_inventory + 2
+
+        if height <= 3:
+            height = 3
+
+        if self.engine.player.x <= 30:
+            x = 40
+        else:
+            x = 0
+
+        y = 0
+
+        width = len( self.TITLE ) + 4
+
+        console.draw_frame(
+            x = x,
+            y = y,
+            width = width,
+            height = height,
+            title = self.TITLE,
+            clear = True,
+            fg = ( 255, 255, 255 ),
+            bg = ( 0, 0, 0 ),
+        )
+
+        if number_of_items_in_inventory > 0:
+            for i, item in enumerate( self.engine.player.inventory.items ):
+                item_key = chr( ord( "a" ) + i )
+                console.print( x + 1, y + i + 1, f"({item_key}) {item.name}" )
+        else:
+            console.print(x + 1, y + 1, "(Empty)" )
+
+    def ev_keydown( self, event: tcod.event.KeyDown ) -> Optional[ Action ]:
+        player = self.engine.player
+        key = event.sym
+        index = key - tcod.event.K_a
+
+        if 0 <= index <= 26: # This only works if you have less or equal to 26 items
+            try:
+                selected_item = player.inventory.items[ index ]
+            except IndexError:
+                self.engine.message_log.add_message( "Invalid entry.", color.invalid ) # Not informative
+                return None
+            return self.on_item_selected( selected_item )
+        return super().ev_keydown( event )
+            
+    def on_item_selecteds( self, item: Item ) -> Optional[ Action ]:
+        """Called when the user selects a valid item."""
+        raise NotImplementedError()
     
