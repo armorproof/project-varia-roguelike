@@ -60,7 +60,7 @@ class Fighter( BaseComponent ):
 
         new_hp_value = self.hp + amount
 
-        if new_hp_value > self.max_up:
+        if new_hp_value > self.max_hp:
             new_hp_value = self.max_hp
 
         # This seems a little roundabout. Investigate better ways later
