@@ -1,5 +1,5 @@
 from components.ai import HostileEnemy, BaseAI
-from components.consumable import HealingConsumable
+from components import consumable
 from components.fighter import Fighter
 from components.inventory import Inventory
 from entity import Actor, Item
@@ -35,5 +35,5 @@ health_potion = Item(
     char = "!",
     color = ( 127, 0, 255 ),
     name = "Health Potion",
-    consumable = HealingConsumable( amount = 4 ),
+    consumable = consumable.HealingConsumable( amount = 4 ),
 )
