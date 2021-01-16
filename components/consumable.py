@@ -121,7 +121,7 @@ class FireballDamageConsumable( Consumable ):
 
         if not targets_hit:
             raise Impossible( "There are no targets in the radius." )
-        self.console()
+        self.consume()
 
 class LightningDamageConsumable( Consumable ):
     def __init__( self, damage: int, maximum_range: int ):
